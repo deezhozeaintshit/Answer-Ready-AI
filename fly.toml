@@ -1,10 +1,10 @@
-# fly.toml app configuration file for answer-ready-ai
+# fly.toml app configuration file generated for answer-ready-ai on 2026-09-09T11:37:18Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
 app = 'answer-ready-ai'
-primary_region = 'ams'
+primary_region = 'ord'
 
 [build]
 
