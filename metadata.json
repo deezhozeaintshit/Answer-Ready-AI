@@ -1,0 +1,6 @@
+{
+  "name": "AnswerReady AI",
+  "description": "The AI Knowledge Profile platform that makes your business easy for AI assistants, search engines, and answer engines to understand, trust, and recommend.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
