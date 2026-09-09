@@ -16,9 +16,12 @@ import {
   ThumbsUp,
   Sliders,
   DollarSign,
-  Loader2
+  Loader2,
+  FileDown,
+  Printer
 } from 'lucide-react';
 import { BusinessProfile, RecommendationItem } from '../types';
+import { ReadinessPdfReportModal } from './ReadinessPdfReportModal';
 
 interface ReadinessScoreViewProps {
   profile: BusinessProfile;
@@ -39,6 +42,7 @@ export const ReadinessScoreView: React.FC<ReadinessScoreViewProps> = ({
   };
   const [selectedRec, setSelectedRec] = useState<RecommendationItem | null>(null);
   const [fixModalOpen, setFixModalOpen] = useState(false);
+  const [pdfReportOpen, setPdfReportOpen] = useState(false);
   const [isFixingWithAi, setIsFixingWithAi] = useState(false);
   const [generatedFixContent, setGeneratedFixContent] = useState('');
   const [filterSeverity, setFilterSeverity] = useState<'all' | 'high' | 'medium'>('all');
@@ -186,6 +190,16 @@ export const ReadinessScoreView: React.FC<ReadinessScoreViewProps> = ({
 
           {/* Quick Stats or CTA */}
           <div className="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
+            <button
+              id="download-pdf-report-btn"
+              onClick={() => setPdfReportOpen(true)}
+              className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-100 text-xs font-semibold border border-slate-700 flex items-center justify-center gap-2 transition-colors shadow-xs group"
+              title="Download clean, printable PDF version of the business's current AI Readiness scorecard and audit findings"
+            >
+              <FileDown className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
+              <span>Download PDF Report</span>
+            </button>
+
             <button
               onClick={() => onNavigateToTab('ask-ai')}
               className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 flex items-center justify-center gap-2 transition-colors"
@@ -400,23 +414,34 @@ export const ReadinessScoreView: React.FC<ReadinessScoreViewProps> = ({
             </p>
           </div>
 
-          <div className="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl text-xs">
+          <div className="flex flex-wrap items-center gap-2">
             <button
-              onClick={() => setFilterSeverity('all')}
-              className={`px-3 py-1 rounded-lg font-medium transition-colors ${
-                filterSeverity === 'all' ? 'bg-white text-slate-900 shadow-xs font-bold' : 'text-slate-600'
-              }`}
+              onClick={() => setPdfReportOpen(true)}
+              className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold flex items-center gap-1.5 transition-colors border border-slate-200 shadow-2xs"
+              title="Export complete findings into printable PDF report"
             >
-              All ({profile.recommendations.length})
+              <FileDown className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Audit Findings PDF</span>
             </button>
-            <button
-              onClick={() => setFilterSeverity('high')}
-              className={`px-3 py-1 rounded-lg font-medium transition-colors ${
-                filterSeverity === 'high' ? 'bg-white text-rose-700 shadow-xs font-bold' : 'text-slate-600'
-              }`}
-            >
-              High Priority
-            </button>
+
+            <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-xl text-xs">
+              <button
+                onClick={() => setFilterSeverity('all')}
+                className={`px-3 py-1 rounded-lg font-medium transition-colors ${
+                  filterSeverity === 'all' ? 'bg-white text-slate-900 shadow-xs font-bold' : 'text-slate-600'
+                }`}
+              >
+                All ({profile.recommendations.length})
+              </button>
+              <button
+                onClick={() => setFilterSeverity('high')}
+                className={`px-3 py-1 rounded-lg font-medium transition-colors ${
+                  filterSeverity === 'high' ? 'bg-white text-rose-700 shadow-xs font-bold' : 'text-slate-600'
+                }`}
+              >
+                High Priority
+              </button>
+            </div>
           </div>
         </div>
 
@@ -567,6 +592,13 @@ export const ReadinessScoreView: React.FC<ReadinessScoreViewProps> = ({
           </div>
         </div>
       )}
+
+      {/* Download Printable PDF Audit Report Modal */}
+      <ReadinessPdfReportModal
+        profile={profile}
+        isOpen={pdfReportOpen}
+        onClose={() => setPdfReportOpen(false)}
+      />
     </div>
   );
 };

@@ -125,7 +125,7 @@ export default function App() {
 
       {/* Sub-navigation bar when viewing business tools */}
       {isBusinessTool && (
-        <div className="bg-slate-900 border-b border-slate-800 text-white sticky top-16 z-30 shadow-md">
+        <div className="bg-slate-900 border-b border-slate-800 text-white sticky top-16 z-30 shadow-md no-print">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between py-2.5 overflow-x-auto gap-2 no-scrollbar">
               <div className="flex items-center gap-1.5 shrink-0 pr-2 border-r border-slate-800">
@@ -193,6 +193,7 @@ export default function App() {
           <div className="py-4">
             <OnboardingScanner
               onCompleteScan={handleCreateNewProfile}
+              onScanComplete={handleCreateNewProfile}
               onCancel={() => setCurrentTab('landing')}
             />
           </div>
@@ -243,7 +244,10 @@ export default function App() {
         )}
 
         {currentTab === 'content-gen' && (
-          <ContentGeneratorView profile={activeProfile} />
+          <ContentGeneratorView
+            profile={activeProfile}
+            onUpdateProfile={handleUpdateActiveProfile}
+          />
         )}
 
         {currentTab === 'knowledge-graph' && (

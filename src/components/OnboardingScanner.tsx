@@ -23,7 +23,8 @@ import { BusinessCategory, BusinessProfile } from '../types';
 import { BUSINESS_TYPE_TEMPLATES } from '../data/sampleProfiles';
 
 interface OnboardingScannerProps {
-  onScanComplete: (newProfile: BusinessProfile) => void;
+  onScanComplete?: (newProfile: BusinessProfile) => void;
+  onCompleteScan?: (newProfile: BusinessProfile) => void;
   onCancel?: () => void;
 }
 
@@ -59,6 +60,7 @@ const CATEGORIES: BusinessCategory[] = [
 
 export const OnboardingScanner: React.FC<OnboardingScannerProps> = ({
   onScanComplete,
+  onCompleteScan,
   onCancel,
 }) => {
   const [scanMode, setScanMode] = useState<'quick' | 'guided' | 'import'>('quick');
@@ -296,7 +298,10 @@ export const OnboardingScanner: React.FC<OnboardingScannerProps> = ({
         // ignore if iframe blocks
       }
 
-      onScanComplete(newProfile);
+      const completeCallback = onScanComplete || onCompleteScan;
+      if (typeof completeCallback === 'function') {
+        completeCallback(newProfile);
+      }
     } catch (err: any) {
       clearInterval(stepInterval);
       setIsScanning(false);
